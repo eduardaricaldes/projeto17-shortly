@@ -6,6 +6,7 @@ import {
     IncreseVisitCountByUserIdRepository,
     DeleteShortUrlByIdRepository,
     GetUserShortUrlListRepository,
+    GetRankingRepository,
 } from "../repositories/urls.repository.js";
 
 export const CreateShortUrlController = async(req,res) => {
@@ -144,5 +145,15 @@ export const GetUsersMeController = async(req, res)=>{
 
     } catch (error) {
         
+    }
+}
+
+export const GetRankingController = async(req, res) =>{
+    try { 
+        const response = await GetRankingRepository()
+        res.send(response)
+     } catch (error) {
+        console.error(error);
+        res.status(500).send(error);
     }
 }
