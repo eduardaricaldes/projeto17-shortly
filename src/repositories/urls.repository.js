@@ -71,9 +71,9 @@ export const DeleteShortUrlByIdRepository = async({ id, userId }) => {
     }
 };
 
-export const GetUserShortUrlListRepository = async() => {
+export const GetUserShortUrlListRepository = async({userId}) => {
     try {
-        const { rows } = await query(GetUrlsUserQuery, [])
+        const { rows } = await query(GetUrlsUserQuery, [userId])
 
         if(rows[0] !== null) {
             return rows

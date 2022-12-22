@@ -5,6 +5,7 @@ import {
     GetShortUrlByTagRepository,
     IncreseVisitCountByUserIdRepository,
     DeleteShortUrlByIdRepository,
+    GetUserShortUrlListRepository,
 } from "../repositories/urls.repository.js";
 
 export const CreateShortUrlController = async(req,res) => {
@@ -103,5 +104,45 @@ export const DeleteShortByIdController = async(req, res)=>{
         console.error(error);
         res.status(500).send(error);
     
+    }
+}
+
+export const GetUsersMeController = async(req, res)=>{
+    try {
+        const user = req.user;
+        const userList = await GetUserShortUrlListRepository({
+            userId: user.id
+        })
+
+        if(!userList) {
+            return res.status(404).send();
+        }
+
+        let sumVisitCount = 0;
+        const shortenedUrls = userList?.reduce((prev, current) => {
+            const obj = {
+                id: current.urlid,
+                shortUrl: current.shorturl,
+                url: current.url,
+                visitCount: parseInt(current.visitcount),
+            }
+            sumVisitCount += parseInt(current.visitcount);
+
+            prev.push(obj)
+            return prev;
+        }, []);
+
+        const userShortly = userList[0];
+        const response = {
+            id: userShortly.id,
+            name: userShortly.name,
+            visitCount: sumVisitCount,
+            shortenedUrls,
+        }
+
+        res.send(response)
+
+    } catch (error) {
+        
     }
 }
