@@ -4,7 +4,7 @@ const CreateShortUrlQuery = `
 `;
 
 const GetShortUrlByTagQuery = `
-    SELECT url FROM urls WHERE shorturl=$1
+    SELECT id, url FROM urls WHERE shorturl=$1
 `;
 
 const GetShortUrlByIdQuery = `
@@ -12,7 +12,7 @@ const GetShortUrlByIdQuery = `
 `;
 
 const IncrementShortUrlVisitQuery = `
-    UPDATE urls SET visitedcount = visitedcount + 1 WHERE shorturl=$1
+    UPDATE urls SET visitcount = visitcount + 1 WHERE id=$1
 `;
 
 const DeleteShortUrlByIdQuery = `
