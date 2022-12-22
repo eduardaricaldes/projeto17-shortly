@@ -26,7 +26,7 @@ export const CreateShortUrlController = async(req,res) => {
         if(shortUrlResponse) {
             res.send(shortUrl);
         }else{
-            res.status(400).send()
+            return res.status(400).send()
         }
     } catch (error) {
         console.error(error)
@@ -48,7 +48,7 @@ export const GetShortUrlByIdController = async(req, res) => {
             id
         });
         if(!response) {
-            res.status(404).send();
+            return res.status(404).send();
         }
         res.send(response);
     } catch (error) {
@@ -66,7 +66,7 @@ export const RedirectController = async(req, res) => {
 
         const shortUrlResponse = await GetShortUrlByTagRepository({ shortUrl });
         if(!shortUrlResponse) {
-            res.status(404).send();
+            return res.status(404).send();
         }
         const shortUrlId = shortUrlResponse.id;
         
@@ -154,6 +154,6 @@ export const GetRankingController = async(req, res) =>{
         res.send(response)
      } catch (error) {
         console.error(error);
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 }

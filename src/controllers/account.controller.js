@@ -45,12 +45,12 @@ export const SignInController = async(req,res) => {
         })
 
         if(!user) {
-            res.status(401).send()
+            return res.status(401).send()
         }
 
         const isPasswordEqual = bcrypt.compareSync(password, user.password);
         if(!isPasswordEqual){
-            res.status(401).send()
+            return res.status(401).send()
         }
 
         const activeUser = await GetSessionActiveRepository({ user_id: user.id });
@@ -67,11 +67,11 @@ export const SignInController = async(req,res) => {
         })
         
         if(!responseToken) {
-            res.status(400).send()
+            return res.status(400).send()
         }
         res.status(201).send(responseToken)
     } catch (error) {
         console.log(error)
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 }
