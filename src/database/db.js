@@ -1,6 +1,7 @@
-import { Pool } from 'pg';
+import pkg from 'pg';
 import config from '../config/configuration.js';
 
+const { Pool } = pkg;
 const pool = new Pool({
     host: config.DATABASE_HOST,
     database: config.DATABASE_NAME,
@@ -20,4 +21,4 @@ pool.on("error", (err) => {
 
 const query = (text, params) => pool.query(text, params);
 
-export default query;
+export { query };
