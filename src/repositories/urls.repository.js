@@ -4,7 +4,8 @@ import {
     GetShortUrlByTagQuery, 
     DeleteShortUrlByIdQuery,
     RankingShortUrlsQuery,
-    GetUrlsUserQuery
+    GetUrlsUserQuery,
+    IncrementShortUrlVisitQuery
 } from "../database/queries/urls.query.js";
 import { query } from '../database/db.js';
 
@@ -93,6 +94,15 @@ export const GetRankingRepository = async() => {
         }else{
             return null
         }
+    } catch (error) {
+        return error;
+    }
+};
+
+export const IncreseVisitCountByUserIdRepository = async({ shortUrlId }) => {
+    try {
+        await query(IncrementShortUrlVisitQuery, [shortUrlId])
+        return true;
     } catch (error) {
         return error;
     }
