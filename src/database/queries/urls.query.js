@@ -21,15 +21,14 @@ const DeleteShortUrlByIdQuery = `
 
 const RankingShortUrlsQuery = `
     SELECT
-        users.id,
-        users.name,
-        urls.id as urlid,
-        urls.shorturl,
-        urls.url,
-        urls.visitcount
+        users.id as id,
+        users.name as name,
+		COUNT(urls.id) as linksCount,
+        SUM(urls.visitcount) as visitcount
     FROM urls
-    LEFT JOIN users ON user.id = urls.user_id
-    ORDER BY urls.visitedcount DESC
+    LEFT JOIN users ON users.id = urls.user_id
+	GROUP BY users.id
+    ORDER BY visitcount DESC
     LIMIT 10
 `
 
