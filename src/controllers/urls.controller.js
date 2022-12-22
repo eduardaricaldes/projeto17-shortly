@@ -1,5 +1,8 @@
 import {nanoid} from 'nanoid'
-import { CreateShortUrlRepository } from "../repositories/urls.repository.js";
+import {
+    CreateShortUrlRepository,
+    GetShortUrlByIdRepository,
+} from "../repositories/urls.repository.js";
 
 export const CreateShortUrlController = async(req,res) => {
     try {
@@ -23,5 +26,23 @@ export const CreateShortUrlController = async(req,res) => {
     } catch (error) {
         console.error(error)
         res.status(500).send()
+    }
+};
+
+export const GetShortUrlByIdController = async(req, res) => {
+    try {
+        const {
+            id,
+        } = req.params
+        const response = await GetShortUrlByIdRepository({
+            id
+        });
+        if(!response) {
+            res.status(404).send();
+        }
+        res.send(response);
+    } catch (error) {
+        console.error(error)
+        res.status(500).send(error);
     }
 };
