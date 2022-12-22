@@ -1,17 +1,25 @@
-const CreateShortUrl = `
+const CreateShortUrlQuery = `
     INSERT INTO urls(shorturl, url, createdat, user_id)
     VALUES($1,$2,$3,$4)
 `;
 
-const GetShortUrlByTag = `
+const GetShortUrlByTagQuery = `
     SELECT url FROM urls WHERE shorturl=$1
 `;
 
-const IncrementShortUrlVisit = `
+const GetShortUrlByIdQuery = `
+    SELECT id, shorturl, url FROM urls WHERE id=$1
+`;
+
+const IncrementShortUrlVisitQuery = `
     UPDATE urls SET visitedcount = visitedcount + 1 WHERE shorturl=$1
 `;
 
-const RankingShortUrls = `
+const DeleteShortUrlByIdQuery = `
+    DELETE FROM urls WHERE user_id=$1 AND id=$2
+`;
+
+const RankingShortUrlsQuery = `
     SELECT
         users.id,
         users.name,
@@ -25,7 +33,7 @@ const RankingShortUrls = `
     LIMIT 10
 `
 
-const GetUrlsUser = `
+const GetUrlsUserQuery = `
     SELECT 
         users.id,
         users.name,
@@ -41,9 +49,11 @@ const GetUrlsUser = `
 `;
 
 export {
-    CreateShortUrl,
-    GetShortUrlByTag,
-    IncrementShortUrlVisit,
-    RankingShortUrls,
-    GetUrlsUser,
+    CreateShortUrlQuery,
+    GetShortUrlByTagQuery,
+    GetShortUrlByIdQuery,
+    IncrementShortUrlVisitQuery,
+    DeleteShortUrlByIdQuery,
+    RankingShortUrlsQuery,
+    GetUrlsUserQuery,
 }
