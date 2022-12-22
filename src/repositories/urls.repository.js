@@ -59,7 +59,7 @@ export const GetShortUrlByTagRepository = async({ shortUrl }) => {
 
 export const DeleteShortUrlByIdRepository = async({ id, userId }) => {
     try {
-        const { rows } = await query(DeleteShortUrlByIdQuery, [id, userId])
+        const { rows } = await query(DeleteShortUrlByIdQuery, [userId, id])
 
         if(rows[0] !== null) {
             return rows[0]

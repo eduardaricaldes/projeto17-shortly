@@ -4,6 +4,7 @@ import {
     GetShortUrlByIdRepository,
     GetShortUrlByTagRepository,
     IncreseVisitCountByUserIdRepository,
+    DeleteShortUrlByIdRepository,
 } from "../repositories/urls.repository.js";
 
 export const CreateShortUrlController = async(req,res) => {
@@ -75,3 +76,32 @@ export const RedirectController = async(req, res) => {
         res.status(500).send(error)
     }
 };
+
+export const DeleteShortByIdController = async(req, res)=>{
+    try {
+        const {
+            id,
+        }= req.params
+        if(!id || isNaN(id)) {
+            return res.status(400).send()
+        }
+
+        const response = await GetShortUrlByIdRepository({
+            id
+        });
+
+        if(!response){
+            return res.status(404).send();
+        }
+
+        await DeleteShortUrlByIdRepository({
+            id: response.id,
+            userId: response.user_id,
+        })
+        res.status(204).send()
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error);
+    
+    }
+}

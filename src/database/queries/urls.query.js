@@ -8,7 +8,7 @@ const GetShortUrlByTagQuery = `
 `;
 
 const GetShortUrlByIdQuery = `
-    SELECT id, shorturl, url FROM urls WHERE id=$1
+    SELECT id, shorturl, url, user_id FROM urls WHERE id=$1
 `;
 
 const IncrementShortUrlVisitQuery = `
