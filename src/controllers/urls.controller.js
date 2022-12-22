@@ -2,6 +2,8 @@ import {nanoid} from 'nanoid'
 import {
     CreateShortUrlRepository,
     GetShortUrlByIdRepository,
+    GetShortUrlByTagRepository,
+    IncreseVisitCountByUserIdRepository,
 } from "../repositories/urls.repository.js";
 
 export const CreateShortUrlController = async(req,res) => {
@@ -34,6 +36,11 @@ export const GetShortUrlByIdController = async(req, res) => {
         const {
             id,
         } = req.params
+
+        if(!id || isNaN(id)) {
+            return res.status(400).send()
+        }
+
         const response = await GetShortUrlByIdRepository({
             id
         });
@@ -44,5 +51,27 @@ export const GetShortUrlByIdController = async(req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).send(error);
+    }
+};
+
+export const RedirectController = async(req, res) => {
+    try {
+        
+        const {
+            shortUrl
+        } = req.params;
+
+        const shortUrlResponse = await GetShortUrlByTagRepository({ shortUrl });
+        if(!shortUrlResponse) {
+            res.status(404).send();
+        }
+        const shortUrlId = shortUrlResponse.id;
+        
+        await IncreseVisitCountByUserIdRepository({ shortUrlId });
+
+        res.redirect(shortUrlResponse.url)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error)
     }
 };
