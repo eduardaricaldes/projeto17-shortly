@@ -2,13 +2,15 @@ import pkg from 'pg';
 import config from '../config/configuration.js';
 
 const { Pool } = pkg;
-const pool = new Pool({
-    host: config.DATABASE_HOST,
-    database: config.DATABASE_NAME,
-    user: config.DATABASE_USER,
-    password: config.DATABASE_PASSWORD,
-    port: config.DATABASE_PORT,
-});
+
+const uri = `postgres://{USER}:{PASSWORD}@{HOST}/{DB_NAME}`;
+
+const connectionString = uri.replace("{USER}",config.DATABASE_USER)
+         .replace("{PASSWORD}", config.DATABASE_PASSWORD)
+         .replace("{HOST}",config.DATABASE_HOST)
+         .replace("{DB_NAME}", config.DATABASE_NAME);
+
+const pool = new Pool({ connectionString });
 
 pool.on('connect', () => {
   console.log('Base de Dados conectado com sucesso!');
